@@ -37,7 +37,6 @@ const clickButtonText = async (Text, page) => {
 const addFolder = CatchFolderErrorAsync(
   async (folderName, folderParentURL, page) => {
     // Go to page to make folder
-    console.log(folderParentURL);
     await page.goto(folderParentURL);
 
     // Make the three dots hiddent
@@ -175,9 +174,6 @@ const recurseFileUploads = CatchRecursionErrorAsync(
       }
     });
 
-    console.log(files);
-    console.log(folders);
-
     // Add file to Speechify
     for (const file of files) {
       await addFile(`${directoryStarting}/${file}`, page);
@@ -185,7 +181,6 @@ const recurseFileUploads = CatchRecursionErrorAsync(
 
     // Add folder to Speechify
     for (const folder of folders) {
-      console.log(parentURL);
       const newUrl = await addFolder(folder, parentURL, page);
       await recurseFileUploads(page, `${directoryStarting}/${folder}`, newUrl);
     }
@@ -196,7 +191,7 @@ const recurseFileUploads = CatchRecursionErrorAsync(
 const launchBrowser = async () => {
   return await new Promise((resolve, reject) => {
     try {
-      const browserOutput = puppeteer.launch({ headless: false });
+      const browserOutput = puppeteer.launch({ headless: true });
       resolve(browserOutput);
     } catch (err) {
       reject(err);
